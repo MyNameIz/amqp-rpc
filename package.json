@@ -1,0 +1,20 @@
+{
+  "name": "rabbit-rpc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "start": "tsc && node index.js",
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^13.7.7",
+    "amqplib": "^0.5.5",
+    "short-uuid": "^3.1.1",
+    "uuid": "^7.0.1"
+  }
+}
