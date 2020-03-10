@@ -26,16 +26,11 @@ class Server {
     /**
      * Connect to RabbitMQ
      */
-    private connect (): Promise<Object> {
-        return connect.bind( this )();
-    }
-
-    /**
-     * Create channel
-     */
-    private createChannel (): Promise<Object> {
-        return createChannel.bind( this )()
-            .then(() => this.ch.prefetch( 1 ));
+    public connect (): Promise<Object> {
+        return connect.bind( this )()
+            .then(() => 
+                createChannel.bind( this )()
+                .then(() => this.ch.prefetch( 1 )));
     }
 
     /**
@@ -55,12 +50,7 @@ class Server {
         }
     }
 
-    public async consume ( queue: String, controller: Function ): Promise<void> {
-        // Initialize connection
-        if ( !this.conn )
-            await this.connect();
-        if ( !this.ch )
-            await this.createChannel();
+    public consume ( queue: String, controller: Function ): void {
         this.ch.assertQueue( queue )
             .then(async ok => {
                 this.ch.consume(queue, async msg => {                

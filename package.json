@@ -1,16 +1,21 @@
 {
-  "name": "rabbit-rpc",
+  "name": "@alexey.t/amqp-rpc",
   "version": "1.0.0",
-  "description": "",
+  "description": "This package provides RPC client and RPC server functionality.",
   "main": "dist/index.js",
   "types": "index.d.ts",
   "scripts": {
     "start": "tsc && node index.js",
-    "build": "tsc"
+    "build": "tsc",
+    "prepublish": "tsc"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "homepage": "https://github.com/MyNameIz/amqp-rpc/tree/lib",
+  "author": "Alexey Topchiy (https://github.com/MyNameIz)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MyNameIz/amqp-rpc/tree/lib"
+  },
   "dependencies": {
     "@types/node": "^13.7.7",
     "amqplib": "^0.5.5",
