@@ -1,6 +1,6 @@
 {
   "name": "@alexey.t/amqp-rpc",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "This package provides RPC client and RPC server functionality.",
   "main": "dist/index.js",
   "types": "index.d.ts",
