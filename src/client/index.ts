@@ -114,7 +114,7 @@ class Client {
                 queue,
                 Buffer.from( 
                     serealize( message )),
-                { replyTo, correlationId });            
+                { replyTo, correlationId, contentType: "application/json" });            
         });
     }
 }
