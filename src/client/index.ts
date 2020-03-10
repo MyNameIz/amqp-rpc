@@ -26,8 +26,10 @@ class Client {
     /**
      * Connect to RabbitMQ
      */
-    private connect (): Promise<Object> {
+    public connect (): Promise<Object> {
         return connect.bind( this )()
+            .then(() => 
+                createChannel.bind( this )());
     }
 
     /**
@@ -98,12 +100,6 @@ class Client {
             const 
                 replyTo = `response_${queue}`,
                 correlationId = uuid();
-
-            // Connection initialization
-            if ( !this.conn )
-                await this.connect();
-            if ( !this.ch )
-                await this.createChannel();
 
             // Prepare required queues
             this.ch.assertQueue(queue);
