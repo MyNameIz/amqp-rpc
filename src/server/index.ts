@@ -23,6 +23,15 @@ class Server {
         this.name = name ? name : `Server_${short.generate()}`
     }
 
+    /**
+     * Connect to RabbitMQ
+     */
+    public connect (): Promise<Object> {
+        return connect.bind( this )()
+            .then(() => 
+                createChannel.bind( this )()
+                .then(() => this.ch.prefetch( 1 )));
+    }
 
     /**
      * Consume specified queue
@@ -54,21 +63,15 @@ class Server {
                         }
                     };
 
+                    this.ch.ack( msg );
 
-                    try {
-                        let result = controller( deserealize( msg ), msg );
-
-                        if ( result instanceof Promise )
-                            await result;
-                            
-                        replyBody.body.data = result
-                    } catch ( err ) {
-                        console.error( err );
-                        replyBody.body.err = err;
-                    } finally {
-                        this.ch.ack( msg );
-                        this.reply( replyBody );
-                    }
+                    Promise.resolve( controller( deserealize( msg ), msg ) )
+                        .then(result => replyBody.body.data = result)
+                        .catch(err => {
+                            console.error(err);
+                            replyBody.body.err = err;    
+                        })
+                        .finally(() => this.reply( replyBody ));
                 })
             });
     }
