@@ -37,45 +37,35 @@ function deserealize( msg ) {
     return result;
 }
 
-function connect() {
-    console.info(` [.] Connecting to message broker`);
-    let onerror = connectionError.bind( this );
+// function connect() {
+//     
+//     let onerror = connectionError.bind( this );
 
-    return amqp
-        .connect( this.connArgs )
-        .then(connection => {
-            this.conn = connection
-            this.conn.on( "error", onerror );
-            this.conn.on( "close", onerror );
-            console.info(` [v] Connection initialized`);
-        })
-        .catch( onerror );
+//     return amqp
+//         .connect( this.connArgs )
+//         .then(connection => {
+//             this.conn = connection
+//             this.conn.on( "error", onerror );
+//             this.conn.on( "close", onerror );
+//             console.info(` [v] Connection initialized`);
+//         })
+//         .catch( onerror );
+// }
+
+async function connect() {
+    try {
+        console.info(` [.] Connecting to message broker`);
+        this.conn = await amqp.connect(this.connArgs);
+        console.info(` [v] Connection initialized`);
+
+        console.info(" [.] Initializing channel");
+        this.ch = await this.conn.createConfirmChannel
+        console.log(" [v] Channel created");
+    } catch(err) {
+        console.log(" [x] %s", err.toString());
+        console.log(" [x] Message Broker connection failed");
+        setTimeout(connect.bind( this ), 500);
+    }
 }
 
-function connectionError ( err ) {
-    console.log(" [x] %s", err.toString());
-    console.log(" [x] Message Broker connection failed");
-    setTimeout(connect.bind( this ), 500);
-}
-
-function createChannel() {
-    console.info(" [.] Initializing channel");
-    let onerror = channelError.bind( this );
-
-    return this.conn.createConfirmChannel()
-            .then(channel => {
-                this.ch = channel;
-                this.ch.on( "error", onerror );
-                this.ch.on( "close", onerror );
-                console.log(" [v] Channel created");
-            })
-            .catch( onerror ) 
-}
-
-function channelError( err ) {
-    console.log(" [x] %s", err.toString());
-    console.log(" [x] Message Broker connection failed");
-    setTimeout(createChannel.bind( this ), 500);
-}
-
-export { serealize, deserealize, connect, createChannel };
+export { serealize, deserealize, connect };

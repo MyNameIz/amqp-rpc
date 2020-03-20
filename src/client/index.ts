@@ -27,9 +27,7 @@ class Client {
      * Connect to RabbitMQ
      */
     public connect (): Promise<Object> {
-        return connect.bind( this )()
-            .then(() => 
-                createChannel.bind( this )());
+        return connect.bind( this )();
     }
 
     /**

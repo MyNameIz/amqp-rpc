@@ -28,9 +28,7 @@ class Server {
      */
     public connect (): Promise<Object> {
         return connect.bind( this )()
-            .then(() => 
-                createChannel.bind( this )()
-                .then(() => this.ch.prefetch( 1 )));
+            .then(() => this.ch.prefetch(1));
     }
 
     /**
