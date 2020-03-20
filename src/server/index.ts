@@ -23,15 +23,6 @@ class Server {
         this.name = name ? name : `Server_${short.generate()}`
     }
 
-    /**
-     * Connect to RabbitMQ
-     */
-    public connect (): Promise<Object> {
-        return connect.bind( this )()
-            .then(() => 
-                createChannel.bind( this )()
-                .then(() => this.ch.prefetch( 1 )));
-    }
 
     /**
      * Consume specified queue
@@ -65,12 +56,12 @@ class Server {
 
 
                     try {
-                        let result = await controller( deserealize( msg ), msg );
-                        
-                        if ( result instanceof Error )
-                            throw result;
-                        else 
-                            replyBody.body.data = result
+                        let result = controller( deserealize( msg ), msg );
+
+                        if ( result instanceof Promise )
+                            await result;
+                            
+                        replyBody.body.data = result
                     } catch ( err ) {
                         console.error( err );
                         replyBody.body.err = err;
