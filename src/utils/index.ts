@@ -37,21 +37,6 @@ function deserealize( msg ) {
     return result;
 }
 
-// function connect() {
-//     
-//     let onerror = connectionError.bind( this );
-
-//     return amqp
-//         .connect( this.connArgs )
-//         .then(connection => {
-//             this.conn = connection
-//             this.conn.on( "error", onerror );
-//             this.conn.on( "close", onerror );
-//             console.info(` [v] Connection initialized`);
-//         })
-//         .catch( onerror );
-// }
-
 async function connect() {
     try {
         console.info(` [.] Connecting to message broker`);
@@ -59,7 +44,7 @@ async function connect() {
         console.info(` [v] Connection initialized`);
 
         console.info(" [.] Initializing channel");
-        this.ch = await this.conn.createConfirmChannel
+        this.ch = await this.conn.createConfirmChannel();
         console.log(" [v] Channel created");
     } catch(err) {
         console.log(" [x] %s", err.toString());

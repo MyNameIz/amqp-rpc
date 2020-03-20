@@ -4,8 +4,7 @@ import { AmqpConnectionArguments, ReplyConfig } from "../interface";
 import { 
     connect,
     serealize,
-    deserealize,
-    createChannel } from "../utils";
+    deserealize } from "../utils";
 
 class Server {
     private ch;

@@ -4,8 +4,7 @@ import { AmqpConnectionArguments } from "../interface";
 import { 
     connect,
     serealize,
-    deserealize,
-    createChannel } from "../utils";
+    deserealize } from "../utils";
 
 class Client {
     private ch;
