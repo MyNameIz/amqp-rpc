@@ -20,10 +20,21 @@ function serealize( msg ) {
  * @return {JSON | String}
  */
 function deserealize( msg ) {
-    let { properties, content } = msg;
+    let { properties, content } = msg, 
+        str = content.toString(),
+        result;
+
     if ( properties.contentType === "application/json" )
-        return JSON.parse( content.toString() );
-    return content.toString();
+        result = JSON.parse( str );
+    else {
+        try{
+            result = JSON.parse( str );
+        } catch( err ) {
+            result = str;
+        }
+    }
+    
+    return result;
 }
 
 function connect() {
