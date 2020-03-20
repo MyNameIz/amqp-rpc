@@ -29,13 +29,6 @@ class Client {
         return connect.bind( this )();
     }
 
-    /**
-     * Create channel
-     */
-    private createChannel (): Promise<Object> {
-        return createChannel.bind(this)();
-    }
-
     private rpcError ( message?: string ): Error {
         let err = new Error();
         err.name = "Rpc.ClientError";
