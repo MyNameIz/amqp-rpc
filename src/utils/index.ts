@@ -1,4 +1,7 @@
 import * as amqp from "amqplib";
+import Server from '../server';
+import Client from '../client';
+import { timingSafeEqual } from "crypto";
 
 /**
  * Prepare message for pushing to queue
@@ -36,21 +39,41 @@ function deserealize( msg ) {
     
     return result;
 }
+/*
+FIXME:FIXME:FIXME:FIXME:FIXME:FIXME:FIXME:FIXME:FIXME:FIXME:FIXME:FIXME:FIXME:
+*/
+function connect() {
+    var self = this;
+    return new Promise(async (resolve, reject) => {
+        async function connection () {
+            console.info(` [.] Connecting to message broker`);
+            self.conn = await amqp.connect(self.connArgs);
+            console.info(` [v] Connection initialized`);
+        }
 
-async function connect() {
-    try {
-        console.info(` [.] Connecting to message broker`);
-        this.conn = await amqp.connect(this.connArgs);
-        console.info(` [v] Connection initialized`);
+        async function channel() {
+            console.info(" [.] Initializing channel");
+            self.ch = await self.conn.createConfirmChannel();
+            console.log(" [v] Channel created");
 
-        console.info(" [.] Initializing channel");
-        this.ch = await this.conn.createConfirmChannel();
-        console.log(" [v] Channel created");
-    } catch(err) {
-        console.log(" [x] %s", err.toString());
-        console.log(" [x] Message Broker connection failed");
-        setTimeout(connect.bind( this ), 500);
-    }
+            if ( self.consume )
+                self.ch.prefetch(1);
+        }
+        
+        async function trу() {
+            try {
+                await connection();
+                await channel();
+                
+                resolve();
+            } catch {
+                console.error(" [x] Connection broken. Reconnect...")
+                setTimeout(trу, 500);
+            }
+        }      
+
+        await trу.bind(this)();
+    });
 }
 
 export { serealize, deserealize, connect };

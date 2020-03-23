@@ -26,8 +26,7 @@ class Server {
      * Connect to RabbitMQ
      */
     public connect (): Promise<Object> {
-        return connect.bind( this )()
-            .then(() => this.ch.prefetch(1));
+        return connect.bind( this )();
     }
 
     /**
