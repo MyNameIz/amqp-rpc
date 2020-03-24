@@ -39,9 +39,7 @@ function deserealize( msg ) {
     
     return result;
 }
-/*
-FIXME:FIXME:FIXME:FIXME:FIXME:FIXME:FIXME:FIXME:FIXME:FIXME:FIXME:FIXME:FIXME:
-*/
+
 function connect() {
     var self = this;
     return new Promise(async (resolve, reject) => {
@@ -68,7 +66,7 @@ function connect() {
                 resolve();
             } catch {
                 console.error(" [x] Connection broken. Reconnect...")
-                setTimeout(trу, 500);
+                setTimeout(trу, self.reconnInterval || 1500);
             }
         }      
 

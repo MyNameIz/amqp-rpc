@@ -10,15 +10,19 @@ class Server {
     private ch;
     private name;
     private conn;
+    private reconnInterval;
     private connArgs;
 
     /**
      * Create new instance of RPC Client
      * @param {AmqpConnectionArguments} args amqp connection params
+     * @param {number} reconnInterval interval between reconnections 
+     * for the case when the connection initialization has failed 
      * @param {string} name name of the server
      */
-    constructor ( args: AmqpConnectionArguments, name: string ) {
+    constructor ( args: AmqpConnectionArguments, reconnInterval?: number, name?: string ) {
         this.connArgs = args;
+        this.reconnInterval = reconnInterval || 1500;
         this.name = name ? name : `Server_${short.generate()}`
     }
 

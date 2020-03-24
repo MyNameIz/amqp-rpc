@@ -10,6 +10,7 @@ class Client {
     private ch;
     private name;
     private conn;
+    private reconnInterval;
     private connArgs;
 
     /**
@@ -17,8 +18,9 @@ class Client {
      * @param {AmqpConnectionArguments} args amqp connection params
      * @param {string} name client custom identifier
      */
-    constructor ( args: AmqpConnectionArguments, name?: string ) {
+    constructor ( args: AmqpConnectionArguments, reconnInterval?: number, name?: string ) {
         this.connArgs = args;
+        this.reconnInterval = reconnInterval || 1500;
         this.name = name ? name : `Client_${short.generate()}` ;
     }
 
